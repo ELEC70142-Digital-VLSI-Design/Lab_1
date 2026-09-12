@@ -5,7 +5,7 @@
 
 ### Lab 1 - A Quick Start with Synopsys
 
-##### *Peter Cheung, v1.2 - 3 October 2025*
+##### *Peter Cheung, v2.0 - 12 September 2026*
 
 ---
 ### Objectives
