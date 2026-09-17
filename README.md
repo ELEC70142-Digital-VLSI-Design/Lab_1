@@ -11,7 +11,6 @@
 ### Objectives
 ---
 By the end of this laboratory session, you should be able to do the following.
-* Set up your personal laptop environment for **Synopsys EDA software** running on our teaching servers.
 * Use **_Fusion Compiler_** to synthesize a simple circuit from **HDL to standard cells**.
 * Understand the **steps required** to take a RTL specification to silicon using standard cells.
 * Interpret the **timing**, **area** and **power** reports produced by the tool.
