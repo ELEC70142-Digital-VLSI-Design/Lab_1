@@ -44,23 +44,22 @@ If you are EE4 students, you may not have extensive exposure to Github and Markd
 ### Task 1 - Connect to the Teaching Server and Load the Tools
 ---
 
-**_Step 1: Connect_**
-
 To access Imperial College's resources from your personal laptop when you are not in College, you will need to connect to the Universal Access provision after running [Zscaler](https://www.imperial.ac.uk/admin-services/ict/self-service/connect-communicate/remote-access/unified-access/). After authentication, you will be able to access file systems and computer servers.
 
 Synopsys is installed and runs on the EEE teaching servers, which you access via SSH. There are two servers available:
 
-* ee-mill1.ee.ic.ac.uk
-* ee-mill2.ee.ic.ac.uk
+* ee-flip.ee.ic.ac.uk
+* ee-flop.ee.ic.ac.uk
 
-To balance the loading on these two servers, please use **_ee-mill1_** if your group number is **odd**, and **_ee-mill2_** if it is **even**. A list of groups can be found [here](group_allocation.txt).
+To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](group_allocation.txt).
 
 For **Windows**: Use [MobaXterm](https://mobaxterm.mobatek.net) to create a new session by entering the server address with your username and password.
 
 For **Mac**: Use [XQuartz](https://www.xquartz.org). After installation and opening XQuartz, enter:
 ```bash
-ssh -Y <username>@ee-mill1.ee.ic.ac.uk
+ssh -Y <username>@ee-flip/flop.ee.ic.ac.uk
 ```
+
 
 **_Step 2: Get the lab files_**
 
@@ -69,7 +68,9 @@ Ensure that you have also downloaded the tooling scripts to set up the Synopsys 
 Clone this repository into a suitable location in your home directory on the server and move into the Lab 1 folder e.g:
 
 ```bash
-cd ~/Labs/Lab_1
+cd ~/Labs
+git clone https://github.com/ELEC70142-Digital-VLSI-Design/Lab_1.git
+cd Lab_1
 ls
 ```
 
@@ -123,9 +124,14 @@ endmodule
 ```
 <p align="center"> <img src="diagrams/lfsr4.jpg" width="600" height="230"> </p><BR>
 
-> College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
+College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
 ```bash
 scp lfsr4.sv <user_name>@ee-mill1.ee.ic.ac.uk:Labs/Lab_1/src/.
+```
+
+Alternatively edit the file directly on the using Vim (a very old text editor) or Visual Studio Code (via the [remote extension](https://code.visualstudio.com/docs/remote/ssh))
+```bash
+vim src/lfsr4.sv
 ```
 
 **_Step 3: Specify the PDK for your design_**
@@ -152,7 +158,7 @@ vlsi-tooling/syn tsmc65LP
 Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there:
 
 ```bash
-fc_shell -f vlsi-tooling/check_ndm.tcl
+fc_shell -x "source $SYN_TOOLS_DIR/check_ndm.tcl"
 ```
 
 You should see `PASS`, and `28 of 28 special cells`. If you do not, stop and ask a GTA for help; nothing later in this lab will work.
@@ -314,15 +320,15 @@ ls outputs/logical
 cat outputs/logical/lfsr4_synth.v
 ```
 
-> * Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
-> * What is the cell area, and what is the worst setup slack?
+* Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
+* What is the cell area, and what is the worst setup slack?
 
 **_Step 8: Run the whole thing as a script_**
 
 Every command you just typed is in `scripts/syn_logical.tcl`. Open it and compare it against what you did. Then run the whole of Task 2 as a single command:
 
 ```bash
-fc_shell -f scripts/syn_logical.tcl
+fc_shell -x "source scripts/syn_logical.tcl"
 ```
 
 > Notice that the tool does not exit when the script finishes. You are left at the `fc_shell>` prompt with the design still open, which is exactly where you want to be if something went wrong.
