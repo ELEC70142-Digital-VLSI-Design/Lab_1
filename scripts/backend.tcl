@@ -34,6 +34,9 @@ set_max_transition 0.13 -clock_path [get_clocks $CLK_PORT]
 # Cells driven by one clock buffer. Caps the load on any tree stage.
 set_app_options -name cts.common.max_fanout -value 20
 
+# Tells clock tree synthesis clocks transition time - matches max transition time
+set_app_options -name cts.common.default_max_transition -value 0.13
+
 # build_clock, route_clock, then final_opto against the real clock.
 clock_opt
 
@@ -51,10 +54,14 @@ save_lib
 
 lab_banner "Routing"
 
+# Route the design
 route_auto
-route_opt
 
-redirect -tee -file $RPT_DIR/route_check.rpt {check_routes}
+# Optimise routes
+hyper_route_opt
+
+# Check connectivity + DRCs
+check_routes
 
 lab_reports route
 lab_headline
@@ -76,6 +83,9 @@ create_stdcell_fillers -lib_cells [get_lib_cells $fillers]
 
 # Anything that inserts cells has to reconnect power afterwards.
 connect_pg_net -automatic
+
+# Check violations due to filler cells
+remove_stdcell_fillers_with_violation
 
 # Saved before the checks, so a failure still leaves a block to open.
 save_block -label finish
