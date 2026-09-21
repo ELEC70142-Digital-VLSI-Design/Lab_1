@@ -50,43 +50,38 @@ connect_pg_net -automatic
 
 lab_banner "Power plan"
 
-# Both options default to false. Without them the rail reports
-# end-of-line spacing violations against pins inside the cells it
-# runs through.
+# How to build the power and ground (pg) rails supplying the std cells
 create_pg_std_cell_conn_pattern rail_pattern \
-    -layers              $RAIL_LAYER \
-    -mark_as_follow_pin  true \
-    -check_std_cell_drc  true
+    -rail_width [get_attribute [get_layers M1] default_width] \
+    -layers $RAIL_LAYER
 
 # Nothing joins the rails to the ring, so "stop: first_target" runs
 # them out to it.
 set_pg_strategy rail_strategy -core \
-    -pattern   [list [list pattern: rail_pattern] \
-                     [list nets: [list $PWR_NET $GND_NET]]] \
-    -extension [list [list stop: first_target]]
+    -pattern { {pattern: rail_pattern} \
+               {nets: {$PWR_NET $GND_NET}} } \
+    -extension {stop: first_target}
 
 create_pg_ring_pattern ring_pattern \
     -horizontal_layer   $RING_H_LAYER \
-    -horizontal_width   [list $RING_WIDTH] \
-    -horizontal_spacing [list $RING_SPACING] \
+    -horizontal_width   $RING_WIDTH \
+    -horizontal_spacing $RING_SPACING \
     -vertical_layer     $RING_V_LAYER \
-    -vertical_width     [list $RING_WIDTH] \
-    -vertical_spacing   [list $RING_SPACING]
+    -vertical_width     $RING_WIDTH \
+    -vertical_spacing   $RING_SPACING
 
 # Nets are laid innermost first, so VSS sits beside the core.
-# Extending to the die boundary is what generates the block's power
-# pins; without them the LEF abstract has none.
+# Extending to the die boundary is what generates the block's power pins
 set_pg_strategy ring_strategy -core \
-    -pattern   [list [list pattern: ring_pattern] \
-                     [list nets: [list $GND_NET $PWR_NET]] \
-                     [list offset: [list $RING_OFFSET $RING_OFFSET]]] \
-    -extension [list [list [list nets: [list $GND_NET $PWR_NET]] \
-                           [list stop: design_boundary_and_generate_pin]]]
+    -pattern { {pattern: ring_pattern} \
+               {nets: {$GND_NET $PWR_NET}} \
+               {offset: {$RING_OFFSET $RING_OFFSET}} } \
+    -extension {stop: design_boundary_and_generate_pin}
 
 # Rails are on M1 and the ring on M2 and M3, so every rail-to-ring
 # connection is a via.
 set_pg_strategy_via_rule pg_via_rule \
-    -via_rule [list [list intersection: adjacent] [list via_master: default]]
+    -via_rule { {intersection: adjacent} {via_master: default} }
 
 # Ring first, so the rails have something to stop at.
 compile_pg -strategies ring_strategy -via_rule pg_via_rule

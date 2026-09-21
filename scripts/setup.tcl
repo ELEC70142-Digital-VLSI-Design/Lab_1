@@ -43,7 +43,7 @@ foreach v {
 set DESIGN   lfsr4
 set CLK_PORT clk
 
-set RTL_FILES [list src/$DESIGN.sv]
+set RTL_FILES src/$DESIGN.sv
 set SDC_FILE  constraints/$DESIGN.sdc
 
 ####################################################################
