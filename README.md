@@ -126,7 +126,7 @@ endmodule
 
 College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
 ```bash
-scp lfsr4.sv <user_name>@ee-mill1.ee.ic.ac.uk:Labs/Lab_1/src/.
+scp lfsr4.sv <user_name>@ee-<flip/flop>.ee.ic.ac.uk:~/Labs/Lab_1/src/.
 ```
 
 Alternatively edit the file directly on the using Vim (a very old text editor) or Visual Studio Code (via the [remote extension](https://code.visualstudio.com/docs/remote/ssh))
@@ -136,38 +136,31 @@ vim src/lfsr4.sv
 
 **_Step 3: Specify the PDK for your design_**
 
-Before you start, you need to specify which **_process design kit (PDK)_** you will be using. From the top of the repo, enter:
+Before you start, you need to specify which **_process design kit (PDK)_** you will be using. We've got a central script to configure the PDK:
 
 ```bash
-cd ~/Labs
-vlsi-tooling/syn
+synopsys
 ```
 
-This lists all the PDKs available. Choose the TSMC 65nm low power process by entering:
+This lists all the PDKs available (just one currently). Choose the TSMC 65nm low power process by entering:
 
 ```bash
-vlsi-tooling/syn tsmc65LP
+synopsys tsmc65LP
 ```
 
-> The *_tools/syn_* command must be run every time before you run your **_first_** Synopsys EDA tool. It sets the environment variables the tools need, puts them on your PATH, and selects the TSMC 65nm low power process for the rest of the session.
+> The *_synopsys tsmc65LP_* command must be run every time before you run your **_first_** Synopsys EDA tool. It sets the environment variables the tools need, puts them on your PATH, and selects the TSMC 65nm low power process for the rest of the session.
 >
 > Two things to know about it. It gives you a **fresh tcsh shell**. And it loads **one PDK per shell**: to switch, type `exit` first.
 
 **_Step 4: Check the libraries are in place_**
 
-Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there:
+Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there using a shared script:
 
 ```bash
-fc_shell -x "source $SYN_TOOLS_DIR/check_ndm.tcl"
+checkndm
 ```
 
 You should see `PASS`, and `28 of 28 special cells`. If you do not, stop and ask a GTA for help; nothing later in this lab will work.
-
-Now move into the lab folder, where you will stay for the rest of the session:
-
-```bash
-cd Lab_1
-```
 
 ---
 ### Task 2 - Synthesize RTL to Standard Cells
