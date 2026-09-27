@@ -159,7 +159,7 @@ synopsys tsmc65LP
 >
 > Two things to know about it. It gives you a **fresh tcsh shell**. And it loads **one PDK per shell**: to switch, type `exit` first.
 
-**_Step 4: Check the libraries are in place_**
+**_Step 5: Check the libraries are in place_**
 
 Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there using a shared script:
 
@@ -200,7 +200,7 @@ set FLOW logical
 source scripts/setup.tcl
 ```
 
-Open `scripts/setup.tcl` and read it now. It does three things: 1) it loads the PDK description that `vlsi-tooling/syn` selected; 2) it names the design and its files; 3) it sets the handful of numbers you are allowed to change:
+Open `scripts/setup.tcl` and read it now. It does three things: 1) it loads the PDK (i.e. tsmc65LP); 2) it names the design and its files; 3) it sets the handful of numbers you are allowed to change:
 
 ```tcl
 set CORE_UTIL   0.6         ;# fraction of the core available to cells
@@ -324,13 +324,8 @@ ls -l outputs/logical
 cat outputs/logical/lfsr4_synth.v
 ```
 
-<<<<<<< HEAD
 > * Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
 > * What is the cell area, and what is the worst setup slack? 
-=======
-* Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
-* What is the cell area, and what is the worst setup slack?
->>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 
 **_Step 8: Run the whole thing as a script_**
 
