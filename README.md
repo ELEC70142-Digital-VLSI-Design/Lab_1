@@ -51,21 +51,13 @@ Synopsys is installed and runs on the EEE teaching servers, which you access via
 * ee-flip.ee.ic.ac.uk
 * ee-flop.ee.ic.ac.uk
 
-<<<<<<< HEAD
 To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](team_allocation.txt).
-=======
-To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](group_allocation.txt).
->>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 
 For **Windows**: Use [MobaXterm](https://mobaxterm.mobatek.net) to create a new session by entering the server address with your username and password.
 
 For **Mac**: Use [XQuartz](https://www.xquartz.org). After installation and opening XQuartz, enter:
 ```bash
-<<<<<<< HEAD
 ssh -Y <username>@ee-flip.ee.ic.ac.uk
-=======
-ssh -Y <username>@ee-flip/flop.ee.ic.ac.uk
->>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 ```
 
 
