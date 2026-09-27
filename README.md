@@ -727,8 +727,9 @@ make waves KIND=layout_fusion
 > Both flows implement the same RTL, so both must produce the same output sequence. If they do not, one of them is wrong. Check.
 
 ---
-### When something goes wrong
+### Tips on debugging a design
 ---
+Congratualtions!  You have successfully map a digital circuit specified as an HDL source file to layout, and verify that the design works.  This section is some important tips to show how you might go about debugging a circuit where the design flow above yield errors.
 
 Everything in this lab prints to your terminal and nothing is saved unless you ask, so save it:
 
