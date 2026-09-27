@@ -5,7 +5,7 @@
 
 ### Lab 1 - A Quick Start with Synopsys
 
-##### *Peter Cheung, v2.0 - 12 September 2026*
+##### *Peter Cheung, v2.1 - 27 September 2026*
 
 ---
 ### Objectives
@@ -41,7 +41,7 @@ You may also want to clone this repo onto your own laptop, so that you have a lo
 If you are EE4 students, you may not have extensive exposure to Github and Markdown language. I am afraid you will have to learn these skills taking this module. Your final project submission will have to be in the form of a Github repo. In any case, all EEE graduates should be familiar with these skills.
 
 ---
-### Task 1 - Connect to the Teaching Server and Load the Tools
+### Task 1 - Connect to the Teaching Server and Clone the lab repo
 ---
 
 **_Step 1: Connect_**
@@ -50,23 +50,23 @@ To access Imperial College's resources from your personal laptop when you are no
 
 Synopsys is installed and runs on the EEE teaching servers, which you access via SSH. There are two servers available:
 
-* ee-mill1.ee.ic.ac.uk
-* ee-mill2.ee.ic.ac.uk
+* ee-flip.ee.ic.ac.uk
+* ee-flop.ee.ic.ac.uk
 
-To balance the loading on these two servers, please use **_ee-mill1_** if your group number is **odd**, and **_ee-mill2_** if it is **even**. A list of groups can be found [here](group_allocation.txt).
+To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](team_allocation.txt).
 
 For **Windows**: Use [MobaXterm](https://mobaxterm.mobatek.net) to create a new session by entering the server address with your username and password.
 
 For **Mac**: Use [XQuartz](https://www.xquartz.org). After installation and opening XQuartz, enter:
 ```bash
-ssh -Y <username>@ee-mill1.ee.ic.ac.uk
+ssh -Y <username>@ee-flip.ee.ic.ac.uk
 ```
 
 **_Step 2: Get the lab files_**
 
-Ensure that you have also downloaded the tooling scripts to set up the Synopsys environment. 
+Ensure that you have also downloaded the tooling scripts to set up the Synopsys environment from Lab 0. 
 
-Clone this repository into a suitable location in your home directory on the server and move into the Lab 1 folder e.g:
+Clone this repository at a suitable location in your home directory on the server and change to the Lab 1 directory e.g:
 
 ```bash
 cd ~/Labs/Lab_1
@@ -75,7 +75,7 @@ ls
 
 Everything you need is already there:
 
-| Path | What it is |
+| Path | What it is? |
 |---|---|
 | `src/lfsr4.sv` | the design |
 | `src/lfsr4_tb.sv` | the testbench |
@@ -96,7 +96,11 @@ Four directories appear as you work and hold everything the tools produce:
 * **reports** - every report, one folder per flow
 * **sim** - simulation binaries and waveforms
 
-The design is the 4-bit linear feedback shift register from the 2nd year labs. Open `src/lfsr4.sv` and read it before you go further:
+**_Step 3: Check the HDL source code for the design_**
+
+You can use your favourite editor to create the HDL code for your design.  For example, you may use VSC on your laptop and then copy it to the server.  Alternatively you may use one of the Linux editors (e.g. vim) to create the source file.
+
+For this lab, the design is a simple 4-bit linear feedback shift register from the 2nd year labs. This is provide for you in the lab repo. Open `src/lfsr4.sv` and read it before you go further:
 
 ```v
 module lfsr4 (
@@ -125,7 +129,7 @@ endmodule
 
 > College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
 ```bash
-scp lfsr4.sv <user_name>@ee-mill1.ee.ic.ac.uk:Labs/Lab_1/src/.
+scp lfsr4.sv <user_name>@ee-flip.ee.ic.ac.uk:Labs/Lab_1/src/.
 ```
 
 **_Step 3: Specify the PDK for your design_**
@@ -194,7 +198,7 @@ set FLOW logical
 source scripts/setup.tcl
 ```
 
-Open `scripts/setup.tcl` and read it now. It does three things: it loads the PDK description that `vlsi-tooling/syn` selected, it names the design and its files, and it sets the handful of numbers you are allowed to change:
+Open `scripts/setup.tcl` and read it now. It does three things: 1) it loads the PDK description that `vlsi-tooling/syn` selected; 2) it names the design and its files; 3) it sets the handful of numbers you are allowed to change:
 
 ```tcl
 set CORE_UTIL   0.6         ;# fraction of the core available to cells
@@ -237,7 +241,7 @@ check_design -checks netlist
 
 `analyze` checks the HDL and stores it. `elaborate` builds the design from it, resolving parameters and inferring registers.
 
-> The elaboration output names every register the tool inferred from your RTL. A register you did not expect is the earliest and cheapest sign of an RTL bug.
+> The elaboration generates and give names to every register the tool inferred from your RTL source. A register you did not expect in the output file is the earliest and most obvious sign of an RTL bug.
 
 **_Step 5: Set up the constraints_**
 
@@ -266,7 +270,7 @@ Three corners are set up:
 
 > Why is hold checked at the fast corner and setup at the slow one?
 
-The timing constraints themselves are in `constraints/lfsr4.sdc`, and the same file is read into all three scenarios. Open it:
+The timing constraints themselves are in `constraints/lfsr4.sdc`, and the same file is read into all three scenarios. Its contents includes the following lines:
 
 ```tcl
 create_clock -name clk -period 1.0 [get_ports clk]
@@ -278,7 +282,11 @@ set_output_delay 0.2 -clock clk [get_ports data_out[*]]
 set_load 0.01 [all_outputs]
 ```
 
-A 1 ns period is a 1 GHz clock. The uncertainty stands in for jitter and, for the skew it will have.
+> You are in the Fusion Compiler shell (fc_shell). To print the *_sdc_* file, you can use the command:
+> ```tcl
+>   sh cat constraints/lfsr4.sdc
+
+The time unit is in nanosecond.  1 ns period is a 1 GHz clock. The uncertainty stands in for jitter and, for the skew it will have.
 
 **_Step 6: Synthesize to gates_**
 
@@ -310,12 +318,12 @@ save_lib
 Now leave the tool with `exit` and look at what you produced:
 
 ```bash
-ls outputs/logical
+ls -l outputs/logical
 cat outputs/logical/lfsr4_synth.v
 ```
 
 > * Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
-> * What is the cell area, and what is the worst setup slack?
+> * What is the cell area, and what is the worst setup slack? 
 
 **_Step 8: Run the whole thing as a script_**
 
