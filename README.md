@@ -44,8 +44,6 @@ If you are EE4 students, you may not have extensive exposure to Github and Markd
 ### Task 1 - Connect to the Teaching Server and Clone the lab repo
 ---
 
-**_Step 1: Connect_**
-
 To access Imperial College's resources from your personal laptop when you are not in College, you will need to connect to the Universal Access provision after running [Zscaler](https://www.imperial.ac.uk/admin-services/ict/self-service/connect-communicate/remote-access/unified-access/). After authentication, you will be able to access file systems and computer servers.
 
 Synopsys is installed and runs on the EEE teaching servers, which you access via SSH. There are two servers available:
@@ -53,14 +51,23 @@ Synopsys is installed and runs on the EEE teaching servers, which you access via
 * ee-flip.ee.ic.ac.uk
 * ee-flop.ee.ic.ac.uk
 
+<<<<<<< HEAD
 To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](team_allocation.txt).
+=======
+To balance the loading on these two servers, please use **_ee-flip_** if your group number is **odd**, and **_ee-flop_** if it is **even**. A list of groups can be found [here](group_allocation.txt).
+>>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 
 For **Windows**: Use [MobaXterm](https://mobaxterm.mobatek.net) to create a new session by entering the server address with your username and password.
 
 For **Mac**: Use [XQuartz](https://www.xquartz.org). After installation and opening XQuartz, enter:
 ```bash
+<<<<<<< HEAD
 ssh -Y <username>@ee-flip.ee.ic.ac.uk
+=======
+ssh -Y <username>@ee-flip/flop.ee.ic.ac.uk
+>>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 ```
+
 
 **_Step 2: Get the lab files_**
 
@@ -69,7 +76,9 @@ Ensure that you have also downloaded the tooling scripts to set up the Synopsys 
 Clone this repository at a suitable location in your home directory on the server and change to the Lab 1 directory e.g:
 
 ```bash
-cd ~/Labs/Lab_1
+cd ~/Labs
+git clone https://github.com/ELEC70142-Digital-VLSI-Design/Lab_1.git
+cd Lab_1
 ls
 ```
 
@@ -127,45 +136,47 @@ endmodule
 ```
 <p align="center"> <img src="diagrams/lfsr4.jpg" width="600" height="230"> </p><BR>
 
-> College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
+College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
 ```bash
+<<<<<<< HEAD
 scp lfsr4.sv <user_name>@ee-flip.ee.ic.ac.uk:Labs/Lab_1/src/.
+=======
+scp lfsr4.sv <user_name>@ee-<flip/flop>.ee.ic.ac.uk:~/Labs/Lab_1/src/.
+```
+
+Alternatively edit the file directly on the using Vim (a very old text editor) or Visual Studio Code (via the [remote extension](https://code.visualstudio.com/docs/remote/ssh))
+```bash
+vim src/lfsr4.sv
+>>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 ```
 
 **_Step 3: Specify the PDK for your design_**
 
-Before you start, you need to specify which **_process design kit (PDK)_** you will be using. From the top of the repo, enter:
+Before you start, you need to specify which **_process design kit (PDK)_** you will be using. We've got a central script to configure the PDK:
 
 ```bash
-cd ~/Labs
-vlsi-tooling/syn
+synopsys
 ```
 
-This lists all the PDKs available. Choose the TSMC 65nm low power process by entering:
+This lists all the PDKs available (just one currently). Choose the TSMC 65nm low power process by entering:
 
 ```bash
-vlsi-tooling/syn tsmc65LP
+synopsys tsmc65LP
 ```
 
-> The *_tools/syn_* command must be run every time before you run your **_first_** Synopsys EDA tool. It sets the environment variables the tools need, puts them on your PATH, and selects the TSMC 65nm low power process for the rest of the session.
+> The *_synopsys tsmc65LP_* command must be run every time before you run your **_first_** Synopsys EDA tool. It sets the environment variables the tools need, puts them on your PATH, and selects the TSMC 65nm low power process for the rest of the session.
 >
 > Two things to know about it. It gives you a **fresh tcsh shell**. And it loads **one PDK per shell**: to switch, type `exit` first.
 
 **_Step 4: Check the libraries are in place_**
 
-Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there:
+Fusion Compiler does not read the foundry's Liberty and LEF files directly. It reads a **NDM** library. Confirm it is there using a shared script:
 
 ```bash
-fc_shell -f vlsi-tooling/check_ndm.tcl
+checkndm
 ```
 
 You should see `PASS`, and `28 of 28 special cells`. If you do not, stop and ask a GTA for help; nothing later in this lab will work.
-
-Now move into the lab folder, where you will stay for the rest of the session:
-
-```bash
-cd Lab_1
-```
 
 ---
 ### Task 2 - Synthesize RTL to Standard Cells
@@ -322,15 +333,20 @@ ls -l outputs/logical
 cat outputs/logical/lfsr4_synth.v
 ```
 
+<<<<<<< HEAD
 > * Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
 > * What is the cell area, and what is the worst setup slack? 
+=======
+* Examine the synthesized Verilog file and satisfy yourself that it is what you expected.
+* What is the cell area, and what is the worst setup slack?
+>>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
 
 **_Step 8: Run the whole thing as a script_**
 
 Every command you just typed is in `scripts/syn_logical.tcl`. Open it and compare it against what you did. Then run the whole of Task 2 as a single command:
 
 ```bash
-fc_shell -f scripts/syn_logical.tcl
+fc_shell -x "source scripts/syn_logical.tcl"
 ```
 
 > Notice that the tool does not exit when the script finishes. You are left at the `fc_shell>` prompt with the design still open, which is exactly where you want to be if something went wrong.

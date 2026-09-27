@@ -43,7 +43,7 @@ foreach v {
 set DESIGN   lfsr4
 set CLK_PORT clk
 
-set RTL_FILES [list src/$DESIGN.sv]
+set RTL_FILES src/$DESIGN.sv
 set SDC_FILE  constraints/$DESIGN.sdc
 
 ####################################################################
@@ -60,6 +60,14 @@ set RING_SPACING 0.5
 # Centres the ring set in the core-to-die channel:
 # (CORE_OFFSET - (2 * RING_WIDTH + RING_SPACING)) / 2.
 set RING_OFFSET  1.25
+
+# Power rails on the lowest routing layer, where cells present their VDD and VSS pins.
+set RAIL_LAYER M1
+
+# The cell rails are on M1, so a ring segment there is a short
+# rather than a crossing. Vias connect the M2/M3 ring down to M1.
+set RING_H_LAYER M3
+set RING_V_LAYER M2
 
 # On-chip variation, applied at every corner in scripts/mcmm.tcl.
 set DERATE_EARLY 0.95

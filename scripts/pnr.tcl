@@ -61,6 +61,9 @@ redirect -tee -file $RPT_DIR/place_pre_check.rpt \
 
 place_opt
 
+# Tells the tool how many fanouts a tie cell can have - default is 999 (way too many)
+set_app_options -name opt.tie_cell.max_fanout -value 10 
+
 # Constants need a tie cell rather than a direct connection to a rail.
 add_tie_cells \
     -tie_high_lib_cells [get_lib_cells */$TIE_HI_CELL] \
