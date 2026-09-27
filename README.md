@@ -388,7 +388,9 @@ Enter this Tcl command in Fusion Compiler:
 source scripts/floorplan.tcl
 ```
 
-This is worth sourcing and then reading, because it is long and every command in it is doing something specific. Open `scripts/floorplan.tcl`.
+> This is worth examining the tcl script carefully so that you know the steps that floorplanning perform.  The script is long and every command in it does something specific. 
+
+Open `scripts/floorplan.tcl` with an editor.
 
 **The core.** `initialize_floorplan` creates the area the cells will sit in and fills it with rows:
 
