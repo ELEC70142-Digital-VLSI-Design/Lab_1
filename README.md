@@ -138,19 +138,10 @@ endmodule
 
 College has removed the ability to use Network File System (NFS) and autosynch your files. To edit a file on your laptop and copy it across, use secure copy:
 ```bash
-<<<<<<< HEAD
 scp lfsr4.sv <user_name>@ee-flip.ee.ic.ac.uk:Labs/Lab_1/src/.
-=======
-scp lfsr4.sv <user_name>@ee-<flip/flop>.ee.ic.ac.uk:~/Labs/Lab_1/src/.
 ```
 
-Alternatively edit the file directly on the using Vim (a very old text editor) or Visual Studio Code (via the [remote extension](https://code.visualstudio.com/docs/remote/ssh))
-```bash
-vim src/lfsr4.sv
->>>>>>> b9705fac9c045f91a90a80702eb22368f037c53d
-```
-
-**_Step 3: Specify the PDK for your design_**
+**_Step 4: Specify the PDK for your design_**
 
 Before you start, you need to specify which **_process design kit (PDK)_** you will be using. We've got a central script to configure the PDK:
 
