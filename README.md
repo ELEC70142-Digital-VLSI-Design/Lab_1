@@ -390,9 +390,9 @@ source scripts/floorplan.tcl
 
 > This is worth examining the tcl script carefully so that you know the steps that floorplanning perform.  The script is long and every command in it does something specific. 
 
-Open `scripts/floorplan.tcl` with an editor.
+Open `scripts/floorplan.tcl` with an editor.  Note the following:
 
-**The core.** `initialize_floorplan` creates the area the cells will sit in and fills it with rows:
+**The core:** `initialize_floorplan` creates the area the cells will sit in and fills it with rows:
 
 ```tcl
 initialize_floorplan \
@@ -404,7 +404,7 @@ initialize_floorplan \
 
 `-core_utilization 0.6` means 60 percent of the core is for cells and 40 percent is left for routing. Push it too high and the router runs out of room; too low and the chip is needlessly large. `-core_offset 5` leaves a 5 µm gap between the core and the die edge, which is where the power ring goes.
 
-**The power nets.** A gate is drawn with two pins in RTL and has four in silicon. The Verilog netlist says nothing about power, so the supply nets and every cell's connection to them have to be made here:
+**The power nets:** A gate is drawn with two pins in RTL and has four in silicon. The Verilog netlist says nothing about power, so the supply nets and every cell's connection to them have to be made here:
 
 ```tcl
 create_net -power $PWR_NET
@@ -412,11 +412,11 @@ create_net -ground $GND_NET
 connect_pg_net -automatic
 ```
 
-**Tap cells.** `create_tap_cells` inserts cells that tie the substrate and wells to the supplies, at most 60 µm apart.
+**Tap cells:** `create_tap_cells` inserts cells that tie the substrate and wells to the supplies, at most 60 µm apart.
 
 > Tap cells are not optional. Without them, the parasitic transistors that exist between neighbouring devices can turn on and **latch up**, shorting supply to ground until power is removed. 
 
-Now look at what you have built by running:
+Now examine what you have built so far after the synthesis and floorplaning steps with the graphical user interface.
 
 ```tcl
 start_gui
