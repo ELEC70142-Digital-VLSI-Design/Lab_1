@@ -5,7 +5,7 @@
 
 ### Lab 1 - A Quick Start with Synopsys
 
-##### *Peter Cheung, v2.1 - 27 September 2026*
+##### *Peter Cheung, v2.2 - 1 October 2026*
 
 ---
 ### Objectives
@@ -628,9 +628,9 @@ make sim-rtl
 make sim-synth
 ```
 
-This is the netlist from Task 2, built from real TSMC cells. The cells are not physical: TSMC's Verilog models carry `specify` blocks with delay information used by the simulator.What are missing are the wires, which have zero length yet because nothing has been placed or routed. 
+This is the netlist from Task 2, built from real TSMC cells. The cells are not physical: TSMC's Verilog models include `specified` blocks with delay information used by the simulator. What are missing are the wires, which have zero length yet because nothing has been placed or routed. 
 
-> The cell delays used so far are the defaults built into the models. They are not tied to any particular corner until an SDF is annotated onto them, which is what Step 4 does. So treat this simulation as proof that synthesis preserved the behaviour of your design, not as a measurement of how fast it will run.
+> The cell delays used so far are the defaults built into the models. They are not tied to any particular PVT corner until an SDF is annotated onto them, which is what Step 4 does. So treat this simulation as proof that synthesis preserved the behaviour of your design, not as a measurement of how fast it will run.
 
 **_Step 4: Simulate the layout_**
 
