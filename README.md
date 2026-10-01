@@ -63,8 +63,6 @@ ssh -Y <username>@ee-flip.ee.ic.ac.uk
 
 **_Step 2: Get the lab files_**
 
-Ensure that you have also downloaded the tooling scripts to set up the Synopsys environment from Lab 0. 
-
 Clone this repository at a suitable location in your home directory on the server and change to the Lab 1 directory e.g:
 
 ```bash
